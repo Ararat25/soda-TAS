@@ -8,7 +8,6 @@ type StudentRepository interface {
 	List() ([]*domain.Student, error)
 }
 
-// RubricRepository - одна рубрика на всё приложение
 type RubricRepository interface {
 	Get() (*domain.Rubric, error)
 	Save(*domain.Rubric) error

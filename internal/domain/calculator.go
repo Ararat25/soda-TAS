@@ -2,11 +2,11 @@ package domain
 
 import "fmt"
 
-// GradeCalculator — Domain Service: правило затрагивает рубрикатор и оценки,
-// поэтому не принадлежит ни одной сущности. Сам проверяет согласованность набора
-// оценок с текущим рубрикатором и потом делегирует расчет стратегии.
+// GradeCalculator — Domain Service: проверяет согласованность набора
+// оценок с текущим рубрикатором и делегирует расчет стратегии.
 type GradeCalculator struct{ strategy ScoringStrategy }
 
+// NewGradeCalculator конструктор GradeCalculator
 func NewGradeCalculator(s ScoringStrategy) (*GradeCalculator, error) {
 	if s == nil {
 		return nil, fmt.Errorf("%w: scoring strategy is nil", ErrInvalidValue)
@@ -14,10 +14,12 @@ func NewGradeCalculator(s ScoringStrategy) (*GradeCalculator, error) {
 	return &GradeCalculator{strategy: s}, nil
 }
 
+// Calculate считает оценку используя выбранную стратению
 func (c *GradeCalculator) Calculate(rb *Rubric, evals []*Evaluation) (FinalGrade, error) {
 	if len(evals) == 0 {
 		return FinalGrade{}, ErrNoEvaluations
 	}
+
 	if evals[0] == nil {
 		return FinalGrade{}, fmt.Errorf("%w: nil evaluation", ErrInconsistentEvaluations)
 	}
@@ -29,9 +31,11 @@ func (c *GradeCalculator) Calculate(rb *Rubric, evals []*Evaluation) (FinalGrade
 		if e == nil {
 			return FinalGrade{}, fmt.Errorf("%w: nil evaluation", ErrInconsistentEvaluations)
 		}
+
 		if e.studentID != owner {
 			return FinalGrade{}, fmt.Errorf("%w: evaluations of different students", ErrInconsistentEvaluations)
 		}
+
 		if _, dup := seen[e.criterionID]; dup {
 			return FinalGrade{}, fmt.Errorf("%w: two evaluations for criterion %q", ErrInconsistentEvaluations, e.criterionID)
 		}
