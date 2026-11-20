@@ -10,21 +10,25 @@ import (
 
 var _ repository.EvaluationRepository = (*EvaluationRepo)(nil)
 
+// evalKey — ключ оценки: студент + критерий
 type evalKey struct {
 	student   domain.StudentID
 	criterion domain.CriterionID
 }
 
+// EvaluationRepo — in-memory реализация EvaluationRepository
 type EvaluationRepo struct {
 	mu    sync.RWMutex
 	items map[evalKey]*domain.Evaluation
 	order []evalKey
 }
 
+// NewEvaluationRepo создаёт in-memory репозиторий оценок
 func NewEvaluationRepo() *EvaluationRepo {
 	return &EvaluationRepo{items: make(map[evalKey]*domain.Evaluation)}
 }
 
+// Save сохраняет оценку
 func (r *EvaluationRepo) Save(e *domain.Evaluation) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -39,6 +43,7 @@ func (r *EvaluationRepo) Save(e *domain.Evaluation) error {
 	return nil
 }
 
+// Find возвращает оценку студента по критерию
 func (r *EvaluationRepo) Find(sid domain.StudentID, cid domain.CriterionID) (*domain.Evaluation, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
@@ -51,6 +56,7 @@ func (r *EvaluationRepo) Find(sid domain.StudentID, cid domain.CriterionID) (*do
 	return e, nil
 }
 
+// ByStudent возвращает оценки студента в порядке добавления
 func (r *EvaluationRepo) ByStudent(sid domain.StudentID) ([]*domain.Evaluation, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
@@ -65,6 +71,7 @@ func (r *EvaluationRepo) ByStudent(sid domain.StudentID) ([]*domain.Evaluation, 
 	return out, nil
 }
 
+// Delete удаляет оценку студента по критерию
 func (r *EvaluationRepo) Delete(sid domain.StudentID, cid domain.CriterionID) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()

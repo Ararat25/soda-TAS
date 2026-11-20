@@ -34,6 +34,7 @@ type Service struct {
 	now      Clock
 }
 
+// NewService создаёт сервис сценариев
 func NewService(
 	students repository.StudentRepository,
 	rubrics repository.RubricRepository,

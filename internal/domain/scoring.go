@@ -14,6 +14,7 @@ func clampPercent(p float64) float64 { return math.Max(0, math.Min(100, p)) }
 // на веса критериев, делит на сумму весов и умножает на 100.
 type WeightedAverage struct{}
 
+// Grade считает итог как взвешенное среднее по критериям
 func (WeightedAverage) Grade(rb *Rubric, evals []*Evaluation) (FinalGrade, error) {
 	var sum, wsum float64
 
@@ -34,10 +35,10 @@ func (WeightedAverage) Grade(rb *Rubric, evals []*Evaluation) (FinalGrade, error
 	return NewFinalGrade(clampPercent(sum / wsum * 100))
 }
 
-// SimpleSum суммирует баллы студента по всем критериям, делит на сумму максимумов
-// и умножает на 100
+// SimpleSum суммирует баллы студента по всем критериям, делит на сумму максимумов и умножает на 100
 type SimpleSum struct{}
 
+// Grade считает итог как сумму баллов, делённую на сумму максимумов
 func (SimpleSum) Grade(rb *Rubric, evals []*Evaluation) (FinalGrade, error) {
 	var got, total float64
 

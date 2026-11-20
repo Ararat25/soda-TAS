@@ -15,6 +15,7 @@ type RubricRepo struct {
 	rb *domain.Rubric
 }
 
+// NewRubricRepo создаёт in-memory репозиторий рубрикатора
 func NewRubricRepo() *RubricRepo { return &RubricRepo{rb: domain.NewRubric()} }
 
 // Get возвращает текущий рубрикатор

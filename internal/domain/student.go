@@ -12,6 +12,7 @@ type Student struct {
 	group string
 }
 
+// NewStudent создаёт нового студента
 func NewStudent(id StudentID, name, group string) (*Student, error) {
 	name = strings.TrimSpace(name)
 	if id == "" {
@@ -23,6 +24,11 @@ func NewStudent(id StudentID, name, group string) (*Student, error) {
 	return &Student{id: id, name: name, group: strings.TrimSpace(group)}, nil
 }
 
+// ID возвращает идентификатор студента
 func (s *Student) ID() StudentID { return s.id }
-func (s *Student) Name() string  { return s.name }
+
+// Name возвращает ФИО студента
+func (s *Student) Name() string { return s.name }
+
+// Group возвращает группу студента
 func (s *Student) Group() string { return s.group }

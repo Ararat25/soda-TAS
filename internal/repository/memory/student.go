@@ -10,16 +10,19 @@ import (
 
 var _ repository.StudentRepository = (*StudentRepo)(nil)
 
+// StudentRepo — in-memory реализация StudentRepository
 type StudentRepo struct {
 	mu    sync.RWMutex
 	byID  map[domain.StudentID]*domain.Student
 	order []domain.StudentID
 }
 
+// NewStudentRepo создаёт in-memory репозиторий студентов
 func NewStudentRepo() *StudentRepo {
 	return &StudentRepo{byID: make(map[domain.StudentID]*domain.Student)}
 }
 
+// Save сохраняет студента
 func (r *StudentRepo) Save(s *domain.Student) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -33,6 +36,7 @@ func (r *StudentRepo) Save(s *domain.Student) error {
 	return nil
 }
 
+// ByID возвращает студента по идентификатору
 func (r *StudentRepo) ByID(id domain.StudentID) (*domain.Student, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
@@ -45,6 +49,7 @@ func (r *StudentRepo) ByID(id domain.StudentID) (*domain.Student, error) {
 	return s, nil
 }
 
+// List возвращает студентов в порядке добавления
 func (r *StudentRepo) List() ([]*domain.Student, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()

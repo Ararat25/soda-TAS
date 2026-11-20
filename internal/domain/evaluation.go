@@ -12,11 +12,20 @@ type Evaluation struct {
 	at          time.Time
 }
 
-func (e *Evaluation) StudentID() StudentID     { return e.studentID }
+// StudentID возвращает идентификатор студента
+func (e *Evaluation) StudentID() StudentID { return e.studentID }
+
+// CriterionID возвращает идентификатор критерия
 func (e *Evaluation) CriterionID() CriterionID { return e.criterionID }
-func (e *Evaluation) Score() Score             { return e.score }
-func (e *Evaluation) Comment() string          { return e.comment }
-func (e *Evaluation) At() time.Time            { return e.at }
+
+// Score возвращает выставленный балл
+func (e *Evaluation) Score() Score { return e.score }
+
+// Comment возвращает комментарий к оценке
+func (e *Evaluation) Comment() string { return e.comment }
+
+// At возвращает время выставления оценки
+func (e *Evaluation) At() time.Time { return e.at }
 
 // Correct исправляет оценку и проверяет инварианты. Состояние меняется только после успешной проверки.
 func (e *Evaluation) Correct(rb *Rubric, s Score, comment string, at time.Time) error {

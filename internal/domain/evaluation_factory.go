@@ -11,6 +11,7 @@ type EvaluationFactory struct {
 	now func() time.Time
 }
 
+// NewEvaluationFactory создаёт фабрику оценок
 func NewEvaluationFactory(now func() time.Time) *EvaluationFactory {
 	if now == nil {
 		now = time.Now
@@ -19,6 +20,7 @@ func NewEvaluationFactory(now func() time.Time) *EvaluationFactory {
 	return &EvaluationFactory{now: now}
 }
 
+// Create создаёт оценку с проверкой инвариантов
 func (f *EvaluationFactory) Create(rb *Rubric, sid StudentID, cid CriterionID, s Score, comment string) (*Evaluation, error) {
 	if sid == "" {
 		return nil, fmt.Errorf("%w: student id is empty", ErrInvalidValue)

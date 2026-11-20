@@ -31,10 +31,17 @@ func NewCriterion(id CriterionID, name string, m MaxScore, w Weight) (Criterion,
 	return Criterion{id: id, name: name, max: m, weight: w}, nil
 }
 
+// ID возвращает идентификатор критерия
 func (c Criterion) ID() CriterionID { return c.id }
-func (c Criterion) Name() string    { return c.name }
-func (c Criterion) Max() MaxScore   { return c.max }
-func (c Criterion) Weight() Weight  { return c.weight }
+
+// Name возвращает название критерия
+func (c Criterion) Name() string { return c.name }
+
+// Max возвращает максимальный балл критерия
+func (c Criterion) Max() MaxScore { return c.max }
+
+// Weight возвращает вес критерия
+func (c Criterion) Weight() Weight { return c.weight }
 
 // Validate — балл не выходит за пределы критерия
 func (c Criterion) Validate(s Score) error {
